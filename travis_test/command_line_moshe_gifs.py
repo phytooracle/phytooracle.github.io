@@ -6,7 +6,7 @@ Purpose: Rock the Casbah
 """
 # Sample deployment
 
-# python3 command_line_moshe_gifs.py -i /home/travis/data/season10/last_day_100_test_moshe -o ./travis_test/test_png -n 5
+# python3 command_line_moshe_gifs.py -i /home/travis/data/season10/last_day_100_test_moshe -o ./test_png -n 5
 
 
 import argparse
@@ -143,6 +143,25 @@ def make_html_entry(gif_path):
             soup = bs4.BeautifulSoup(txt)
         outfile = geno_link
 
+                # do index
+        with open("index.html") as inf:
+            txt = inf.read()
+            isoup = bs4.BeautifulSoup(txt)
+
+
+
+
+        new_link = isoup.new_tag("option", value='./geno_pages/'+genotype_name + '.html')
+        print(genotype_name)
+        new_link.string = genotype_name
+        # print(soup)
+        isoup.find('select').append(new_link)
+        # .append(new_link)
+        
+        # save the file again
+        with open("index.html", "w") as outf:
+            outf.write(str(isoup))
+
     new_link = soup.new_tag("img", src='.' + gif_path, height= '20%', width = '40%')
     new_captian = soup.new_tag("figcaption")
     new_captian.string = os.path.basename(gif_path).replace('.gif', '')
@@ -154,24 +173,7 @@ def make_html_entry(gif_path):
         outf.write(str(soup))
 
 
-    # do index
-    with open("index.html") as inf:
-        txt = inf.read()
-        isoup = bs4.BeautifulSoup(txt)
 
-
-
-
-    new_link = isoup.new_tag("option", value='./geno_pages/'+genotype_name + '.html')
-    print(genotype_name)
-    new_link.string = genotype_name
-    # print(soup)
-    isoup.find('select').append(new_link)
-    # .append(new_link)
-    
-    # save the file again
-    with open("index.html", "w") as outf:
-        outf.write(str(isoup))
 
 def getIndexes(dfObj, value):
     ''' Get index positions of value in dataframe i.e. dfObj.'''
